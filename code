@@ -1,0 +1,39 @@
+import matplotlib.pyplot as plt
+import numpy as np
+
+#Primeiro plot
+def T_function(P):
+    cos_theta = np.sqrt(3)/2
+    D = 0.01 #m
+    V = 2*3.7 #volts
+    B = 45*10**-6
+    return P*np.pi*D*D*B*cos_theta/8/V
+P_values = np.linspace(0, 1.2, 1000)
+T_values = T_function(P_values)
+plt.plot(P_values, T_values, linestyle = '-', color = 'k')
+plt.xlabel('P(W)', size = '10')
+plt.ylabel('T (kg*m^2/s)', size = '10')
+
+valor_max = T_function(1.2)
+print('O valor máximo para o torque é T(1.2 Watts) =',round(valor_max, 12),'kg*m^2/s')
+plt.show()
+
+#Segundo plot
+def w_function(P):
+    m = 1.330 #kg
+    a = 0.1 #m
+    vol = a*a*a #m^3
+    rho = m/vol #kg/m^3
+    D = 0.01 #m
+    V = 2*3.7 #volts
+    B = 45*10**-6
+    return np.sqrt(1.5*P*np.pi*D*D*B/rho/a**5/V)
+P_values = np.linspace(0, 1.2, 1000)
+w_values = w_function(P_values)
+plt.plot(P_values, w_values, linestyle = '-', color = 'k')
+plt.xlabel('P(W)', size = '10')
+plt.ylabel('w (rad/s)', size = '10')
+
+valor_max = w_function(1.2)*180/np.pi
+print('O valor máximo para a velocidade angular é w(1.2 Watts) =',round(valor_max, 4),'º/s')
+plt.show()
