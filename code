@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-#Primeiro plot
+#1st plot - Torque over power.
 def T_function(P):
     cos_theta = np.sqrt(3)/2
     D = 0.01 #m
@@ -18,7 +18,7 @@ valor_max = T_function(1.2)
 print('O valor máximo para o torque é T(1.2 Watts) =',round(valor_max, 12),'kg*m^2/s')
 plt.show()
 
-#Segundo plot
+#2nd plot - Angular velocity over power.
 def w_function(P):
     m = 1.330 #kg
     a = 0.1 #m
