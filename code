@@ -37,3 +37,38 @@ plt.ylabel('w (rad/s)', size = '10')
 valor_max = w_function(1.2)*180/np.pi
 print('O valor máximo para a velocidade angular é w(1.2 Watts) =',round(valor_max, 4),'º/s')
 plt.show()
+
+#3rd plot -
+import matplotlib.pyplot as plt
+import numpy as np
+
+def w_function(P):
+    m = 1.330 #kg
+    a = 0.1 #m
+    vol = a*a*a #m^3
+    rho = m/vol #kg/m^3
+    D = 0.01 #m
+    V = 2*3.7 #volts
+    B = 45*10**-6
+    return np.sqrt(1.5*P*np.pi*D*D*B/rho/a**5/V)
+P_values = np.linspace(0, 1.2, 1000)
+w_values = w_function(P_values)
+plt.plot(P_values, w_values, linestyle = '-', color = 'k')
+plt.xlabel('P(W)', size = '10')
+plt.ylabel('w (rad/s)', size = '10')
+
+valor_max = w_function(1.2)*180/np.pi
+print('O valor máximo para a velocidade angular é w(1.2 Watts) =',round(valor_max, 4),'º/s')
+plt.show()
+
+def Θ_function(t):
+    angle = np.pi/6 #rad
+    return (angle*np.cos(w_function(1.2)*t)+np.cos(w_function(1.2)*t)-1)*180/np.pi
+t_values = np.linspace(0, 1750, 10000)
+Θ_values = Θ_function(t_values)
+plt.plot(t_values, Θ_values)
+plt.xlabel('t(s)')
+plt.ylabel('Θ(º)')
+
+print('Θ(t)=0 ao fim de: 28 minutos')
+plt.show()
