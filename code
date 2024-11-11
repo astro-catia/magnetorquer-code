@@ -1,21 +1,22 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-#1st plot - Torque over power.
+#1st plot - Torque for theta angle over power.
 def T_function(P):
+    sen_theta = 0.5
     cos_theta = np.sqrt(3)/2
     D = 0.01 #m
-    V = 2*3.7 #volts
-    B = 45*10**-6
-    return P*np.pi*D*D*B*cos_theta/8/V
-P_values = np.linspace(0, 1.2, 1000)
+    V = 2*3.7 #Volts
+    B = 45**10**-6 #T
+    return P*27*np.pi*D*D*B/8/V*(sen_theta+cos_theta)
+P_values = np.linspace(0, 0.4, 1000)
 T_values = T_function(P_values)
 plt.plot(P_values, T_values, linestyle = '-', color = 'k')
 plt.xlabel('P(W)', size = '10')
 plt.ylabel('T (kg*m^2/s)', size = '10')
 
-valor_max = T_function(1.2)
-print('O valor máximo para o torque é T(1.2 Watts) =',round(valor_max, 12),'kg*m^2/s')
+valor_max = T_function(0.4)
+print('O valor máximo para o torque é T(0.4 Watts) =',round(valor_max, 6),'kg*m^2/s^2')
 plt.show()
 
 #2nd plot - Angular velocity over power.
@@ -27,21 +28,18 @@ def w_function(P):
     D = 0.01 #m
     V = 2*3.7 #volts
     B = 45*10**-6
-    return np.sqrt(1.5*P*np.pi*D*D*B/rho/a**5/V)
-P_values = np.linspace(0, 1.2, 1000)
+    return np.sqrt(40.5*P*np.pi*D*D*B/rho/a**5/V)
+P_values = np.linspace(0, 0.4, 1000)
 w_values = w_function(P_values)
 plt.plot(P_values, w_values, linestyle = '-', color = 'k')
 plt.xlabel('P(W)', size = '10')
 plt.ylabel('w (rad/s)', size = '10')
 
-valor_max = w_function(1.2)*180/np.pi
-print('O valor máximo para a velocidade angular é w(1.2 Watts) =',round(valor_max, 4),'º/s')
+valor_max = w_function(0.4)*180/np.pi
+print('O valor máximo para a velocidade angular é w(0.4 Watts) =',round(valor_max, 4),'º/s')
 plt.show()
 
-#3rd plot -
-import matplotlib.pyplot as plt
-import numpy as np
-
+#3rd plot - Angle theta in function of time.
 def w_function(P):
     m = 1.330 #kg
     a = 0.1 #m
@@ -50,25 +48,61 @@ def w_function(P):
     D = 0.01 #m
     V = 2*3.7 #volts
     B = 45*10**-6
-    return np.sqrt(1.5*P*np.pi*D*D*B/rho/a**5/V)
-P_values = np.linspace(0, 1.2, 1000)
-w_values = w_function(P_values)
-plt.plot(P_values, w_values, linestyle = '-', color = 'k')
-plt.xlabel('P(W)', size = '10')
-plt.ylabel('w (rad/s)', size = '10')
-
-valor_max = w_function(1.2)*180/np.pi
-print('O valor máximo para a velocidade angular é w(1.2 Watts) =',round(valor_max, 4),'º/s')
-plt.show()
+    return np.sqrt(40.5*P*np.pi*D*D*B/rho/a**5/V)
 
 def Θ_function(t):
     angle = np.pi/6 #rad
-    return (angle*np.cos(w_function(1.2)*t)+np.cos(w_function(1.2)*t)-1)*180/np.pi
-t_values = np.linspace(0, 1750, 10000)
+    return (angle*np.cos(w_function(0.4)*t)+np.cos(w_function(0.4)*t)-1)*180/np.pi
+t_values = np.linspace(0, 564, 100000)
 Θ_values = Θ_function(t_values)
 plt.plot(t_values, Θ_values)
 plt.xlabel('t(s)')
 plt.ylabel('Θ(º)')
 
-print('Θ(t)=0 ao fim de: 28 minutos')
+time_min = int(560 // 60)
+time_seg = int(560 % 60)
+print('Time to rotate:', time_min, 'minutes and', time_seg, 'seconds')
+
+plt.show()
+
+#4th plot - Torque for phi angle over power.
+def T_function(P):
+    sen_phi = 0.5
+    D = 0.01 #m
+    V = 2*3.7 #volts
+    B = 45*10**-6
+    return P*27*np.pi*D*D*B/8/V*sen_phi
+P_values = np.linspace(0, 0.4, 1000)
+T_values = T_function(P_values)
+plt.plot(P_values, T_values, linestyle = '-', color = 'k')
+plt.xlabel('P(W)', size = '10')
+plt.ylabel('T (kg*m^2/s)', size = '10')
+
+valor_max = T_function(0.4)
+print('O valor máximo para o torque é T(0.4 Watts) =',round(valor_max, 10),'kg*m^2/s')
+plt.show()
+
+#5th plot - Angle phi in function of time.
+def w_function(P):
+    m = 1.330 #kg
+    a = 0.1 #m
+    vol = a*a*a #m^3
+    rho = m/vol #kg/m^3
+    D = 0.01 #m
+    V = 2*3.7 #volts
+    B = 45*10**-6
+    return np.sqrt(40.5*P*np.pi*D*D*B/rho/a**5/V)
+
+def Φ_function(t):
+    angle = np.pi/6 #rad
+    return (angle*np.cos(w_function(0.4)*t))*180/np.pi
+t_values = np.linspace(0, 1040, 10000)
+Φ_values = Φ_function(t_values)
+plt.plot(t_values, Φ_values)
+plt.xlabel('t(s)')
+plt.ylabel('Φ(º)')
+
+time_min = int(1030 //60)
+time_seg = int(1030 % 60)
+print('Φ(t)=0 with a time interval of', time_min, 'minutes and', time_seg, 'seconds')
 plt.show()
